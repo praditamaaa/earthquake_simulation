@@ -44,4 +44,16 @@ void Draw_DetailedBuilding(Mat3 transform, float w, float h, Color wall, Color r
  */
 void Draw_SimpleHouse(Mat3 transform, float w, float h, Color wall, Color roof, int state);
 
+/**
+ * Draw a simple residential house with a triangular roof.
+ * @param transform Mat3 transform for positioning
+ * @param w Width of building
+ * @param h Height of building
+ * @param wall Color of the walls
+ * @param roof Color of the roof
+ * @param state 0: Normal, 1: Cracked, 2: Collapsed
+ */
+void Draw_Building2(Mat3 transform, float w, float h, Color wall, Color roof, int state);
+
+
 #endif /* ELEMENT_VIEW_H */

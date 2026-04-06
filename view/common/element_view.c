@@ -126,7 +126,7 @@ void Draw_SimpleHouse(Mat3 transform, float w, float h, Color wall, Color roof, 
             Poly_FillAndOutlineTransformed(roof_pts, 4, final_trans, col_roof, BLACK);
         }
 
-        if (state >= 1) {
+        if (state >= 15) {
             Vec2 crack[3] = {{w*0.3f, -effective_h*0.7f}, {w*0.6f, -effective_h*0.4f}, {w*0.4f, -effective_h*0.2f}};
             Vec2 tc[3];
             Mat3_ApplyPolygon(final_trans, crack, tc, 3);
@@ -137,5 +137,67 @@ void Draw_SimpleHouse(Mat3 transform, float w, float h, Color wall, Color roof, 
         /* Rubble */
         Vec2 rubble[4] = {{ -w*0.2f, 0 }, { w*1.2f, 0 }, { w*0.6f, -h*0.3f }, { 0, -h*0.1f }};
         Poly_FillAndOutlineTransformed(rubble, 4, transform, col_wall, DARKGRAY);
+    }
+}
+
+void Draw_Building2(Mat3 transform, float w, float h, Color wall, Color roof, int state) {
+    Color col_wall = { 160, 160, 160, 255 }; 
+    Color col_win = BLACK;
+    
+    Mat3 final_trans = transform;
+    if (state == 2) {
+        Mat3 lean;
+        Trans_Rotate(0.05f, &lean); // Leaning slightly
+        Trans_Compose((Mat3[]){lean, transform}, 2, &final_trans);
+    } else if (state == 3) {
+        Mat3 lean;
+        Trans_Rotate(0.1f, &lean); // Leaning more
+        Trans_Compose((Mat3[]){lean, transform}, 2, &final_trans);
+    }
+
+    if (state < 4) {
+        float effective_h = (state == 3) ? h * 1.0f : h; // Partially collapsed
+        
+        /* Building Body */
+        Vec2 body[4] = {{0, -effective_h}, {w, -effective_h}, {w, 0}, {0, 0}};
+        Poly_FillAndOutlineTransformed(body, 4, final_trans, col_wall, DARKGRAY);
+        
+        /* Windows */
+        int rows = (state == 3) ? 4 : 8;
+        int cols = 2;
+        float win_s = w / 5.0f;
+        float spacing_x = (w - (cols * win_s)) / (cols + 1);
+        float spacing_y = (effective_h * 0.7f - (rows * win_s)) / (rows + 1);
+        
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                float wx = spacing_x + c * (win_s + spacing_x);
+                float wy = -effective_h + spacing_y + r * (win_s + spacing_y);
+                Vec2 win[4] = {{wx, wy}, {wx + win_s, wy}, {wx + win_s, wy + win_s}, {wx, wy + win_s}};
+                Poly_FillTransformed(win, 4, final_trans, col_win);
+            }
+        }
+        
+        /* Cracks */
+        if (state >= 10) {
+            Color crack_col = (state >= 2) ? BLACK : DARKGRAY;
+            Vec2 c1[3] = {{w*0.2f, -effective_h*0.8f}, {w*0.5f, -effective_h*0.5f}, {w*0.3f, -effective_h*0.2f}};
+            Vec2 tc1[3];
+            Mat3_ApplyPolygon(final_trans, c1, tc1, 3);
+            Bres_Line((int)tc1[0].x, (int)tc1[0].y, (int)tc1[1].x, (int)tc1[1].y, crack_col);
+            Bres_Line((int)tc1[1].x, (int)tc1[1].y, (int)tc1[2].x, (int)tc1[2].y, crack_col);
+            
+            if (state >= 2) {
+                Vec2 c2[3] = {{w*0.7f, -effective_h*0.9f}, {w*0.4f, -effective_h*0.6f}, {w*0.8f, -effective_h*0.3f}};
+                Vec2 tc2[3];
+                Mat3_ApplyPolygon(final_trans, c2, tc2, 3);
+                Bres_Line((int)tc2[0].x, (int)tc2[0].y, (int)tc2[1].x, (int)tc2[1].y, crack_col);
+                Bres_Line((int)tc2[1].x, (int)tc2[1].y, (int)tc2[2].x, (int)tc2[2].y, crack_col);
+            }
+        }
+    } else {
+        /* Fully Collapsed */
+        Vec2 rubble[5] = {{ -w*0.3f, 0 }, { w*1.3f, 0 }, { w*1.0f, -h*0.2f }, { w*0.5f, -h*0.3f }, { -w*0.1f, -h*0.1f }};
+        Poly_FillAndOutlineTransformed(rubble, 5, transform, col_wall, DARKGRAY);
     }
 }

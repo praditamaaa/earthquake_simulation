@@ -11,6 +11,7 @@ typedef enum {
   EQ_PHASE_SUBDUCTION,
   EQ_PHASE_TREMOR,
   EQ_PHASE_DONE,
+  EQ_PHASE_EVACUATION,
   EQ_PHASE_COUNT
 } EarthquakePhase;
 
@@ -34,7 +35,7 @@ typedef struct {
   /* Buildings */
   float building_shake[12];
   int building_damaged[12];
-  float building_fragility[12]; // Variation in resistance (0.5 to 1.5)
+  float building_fragility[12];
 
   float cloud_timer;
   float intensity; // 0.5 to 2.5

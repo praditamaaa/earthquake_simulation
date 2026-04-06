@@ -8,6 +8,7 @@
 typedef enum {
     SCREEN_MENU = 0,
     SCREEN_SIMULATION,
+    SCREEN_OBJECT,
     SCREEN_ABOUT
 } ScreenType;
 

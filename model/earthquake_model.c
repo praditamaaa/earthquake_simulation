@@ -8,8 +8,9 @@ void EarthquakeModel_Init(EarthquakeModel *m) {
   m->phase_duration[EQ_PHASE_IDLE] = 2.0f;
   m->phase_duration[EQ_PHASE_COLLISION] = 3.0f;
   m->phase_duration[EQ_PHASE_SUBDUCTION] = 4.0f;
-  m->phase_duration[EQ_PHASE_TREMOR] = 7.0f; // Longer tremor
+  m->phase_duration[EQ_PHASE_TREMOR] = 4.0f; // Longer tremor
   m->phase_duration[EQ_PHASE_DONE] = 2.0f;
+  m->phase_duration[EQ_PHASE_EVACUATION] = 4.0f;
 
   EarthquakeModel_Reset(m);
 }

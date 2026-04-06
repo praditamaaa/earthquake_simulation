@@ -36,6 +36,7 @@ void MenuView_DrawMain(int selected_index) {
     /* Buttons */
     const char* labels[] = {
         "Mulai Simulasi",
+        "Objek Aplikasi",
         "Tentang Aplikasi",
         "Keluar"
     };
@@ -44,7 +45,7 @@ void MenuView_DrawMain(int selected_index) {
     int bh = 55;
     int by = 280;
     
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         Color btn_col = (i == selected_index) ? GRAY : DARKGRAY;
         DrawRectFill(SCREEN_W/2 - bw/2, by + i*80, bw, bh, btn_col);
         DrawRectOutline(SCREEN_W/2 - bw/2, by + i*80, bw, bh, LIGHTGRAY);
@@ -56,6 +57,12 @@ void MenuView_DrawMain(int selected_index) {
             MC_CircleFilled(SCREEN_W/2 - bw/2 + 25, by + i*80 + 27, 8, YELLOW);
         }
     }
+}
+
+void MenuView_DrawObject(void) {
+    DrawRectFill(0, 0, SCREEN_W, SCREEN_H, COL_SKY);
+    
+
 }
 
 void MenuView_DrawAbout(void) {

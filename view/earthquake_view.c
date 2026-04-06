@@ -56,9 +56,6 @@ static void Draw_SoilDebris(Mat3 transform, float x, float y) {
 static void EarthquakeView_DrawPlates(const EarthquakeModel *m, float offset_x, float offset_y) {
   float split_x = 400.0f;
   
-  // Left Plate
-  
-  // Left Plate
   EarthLayers_DrawLeft(DEFAULT_LAYERS, NUM_EARTH_LAYERS-1, -200, (int)split_x, 
                        m->left_plate_offset_x + offset_x, offset_y);
   
@@ -98,14 +95,16 @@ static void EarthquakeView_DrawStructures(const EarthquakeModel *m, float offset
   Color wall = {220, 220, 220, 255};
   Color roof = {180, 60, 60, 255};
   
-  static const float pos_x[12] = {
-    80, 180, 280,   // Left houses
-    380, 460, 540, 620, 700, 780, // Middle buildings
-    900, 1000, 1100 // Right houses
+  static const float pos_x[16] = {
+    40, 95, 150,   
+    200, 270,
+    380, 460, 540, 620, 700, 780,
+    890, 960, 
+    1070, 1125, 1180
   };
-  static const int is_building[12] = {0,0,0, 1,1,1,1,1,1, 0,0,0};
+  static const int is_building[16] = {2,2,2, 3,3, 1,1,1,1,1,1, 3,3, 2,2,2};
 
-  for (int i = 0; i < 12; i++) {
+  for (int i = 0; i < 16; i++) {
     float x = pos_x[i];
     float plate_off_x = (x < 400) ? m->left_plate_offset_x : m->right_plate_offset_x;
     
@@ -115,10 +114,14 @@ static void EarthquakeView_DrawStructures(const EarthquakeModel *m, float offset
     Mat3 t;
     Trans_Translate(draw_x, draw_y, &t);
     
-    if (is_building[i]) {
+    if (is_building[i] == 1) {
       Draw_DetailedBuilding(t, 60, 180, wall, roof, m->building_damaged[i]);
-    } else {
+    } else if (is_building[i] == 2) {
       Draw_SimpleHouse(t, 50, 40, wall, roof, m->building_damaged[i]);
+    } else if (is_building[i] == 3) {
+      Draw_Building2(t, 30, 200, wall, roof, m->building_damaged[i]);
+    } else {
+      continue;
     }
   }
 }

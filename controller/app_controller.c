@@ -12,7 +12,7 @@ void AppController_Init(AppController *ctrl) {
 }
 
 void AppController_HandleInput(AppController *ctrl) {
-    if (ctrl->app_state.current_screen == SCREEN_MENU || ctrl->app_state.current_screen == SCREEN_ABOUT) {
+    if (ctrl->app_state.current_screen == SCREEN_MENU || ctrl->app_state.current_screen == SCREEN_ABOUT || ctrl->app_state.current_screen == SCREEN_OBJECT) {
         MenuController_HandleInput(ctrl);
     } else if (ctrl->app_state.current_screen == SCREEN_SIMULATION) {
         SimController_HandleInput(ctrl);
@@ -37,6 +37,9 @@ void AppController_Draw(AppController *ctrl) {
         case SCREEN_SIMULATION:
             EarthquakeView_Draw(&ctrl->app_state);
             break;
+        case SCREEN_OBJECT:
+            MenuView_DrawObject();
+            break;
         default:
             break;
     }
@@ -53,6 +56,9 @@ void AppController_Run(AppController *ctrl) {
         EndDrawing();
     }
 }
+
+
 void AppController_Destroy(AppController *ctrl) {
-    // No specific dynamic memory to free yet
+
+    
 }
